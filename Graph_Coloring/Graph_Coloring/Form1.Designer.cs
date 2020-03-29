@@ -30,6 +30,9 @@
             this.removeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.highDegreeFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lowDegreeFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomRecolorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusVertexLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -52,9 +55,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.drawingPanel = new System.Windows.Forms.Panel();
-            this.highDegreeFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lowDegreeFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.randomRecolorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label5 = new System.Windows.Forms.Label();
+            this.seedUpDown = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -65,6 +67,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.edgeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vertexUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -93,28 +96,28 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.OnNewGraphClick);
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.removeToolStripMenuItem.Text = "Remove";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.OnRemoveClick);
             // 
             // removeAllToolStripMenuItem
             // 
             this.removeAllToolStripMenuItem.Name = "removeAllToolStripMenuItem";
-            this.removeAllToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.removeAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.removeAllToolStripMenuItem.Text = "Remove All";
             this.removeAllToolStripMenuItem.Click += new System.EventHandler(this.OnRemoveAllClick);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.OnExitClick);
             // 
@@ -127,6 +130,27 @@
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
             this.colorToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.colorToolStripMenuItem.Text = "Color";
+            // 
+            // highDegreeFirstToolStripMenuItem
+            // 
+            this.highDegreeFirstToolStripMenuItem.Name = "highDegreeFirstToolStripMenuItem";
+            this.highDegreeFirstToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.highDegreeFirstToolStripMenuItem.Text = "High Degree First";
+            this.highDegreeFirstToolStripMenuItem.Click += new System.EventHandler(this.OnHDFClick);
+            // 
+            // lowDegreeFirstToolStripMenuItem
+            // 
+            this.lowDegreeFirstToolStripMenuItem.Name = "lowDegreeFirstToolStripMenuItem";
+            this.lowDegreeFirstToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.lowDegreeFirstToolStripMenuItem.Text = "Low Degree First";
+            this.lowDegreeFirstToolStripMenuItem.Click += new System.EventHandler(this.OnLDFClick);
+            // 
+            // randomRecolorToolStripMenuItem
+            // 
+            this.randomRecolorToolStripMenuItem.Name = "randomRecolorToolStripMenuItem";
+            this.randomRecolorToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.randomRecolorToolStripMenuItem.Text = "Random Recolor";
+            this.randomRecolorToolStripMenuItem.Click += new System.EventHandler(this.OnRandomRecolorClick);
             // 
             // displayToolStripMenuItem
             // 
@@ -190,7 +214,9 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.AliceBlue;
+            this.splitContainer1.Panel1.Controls.Add(this.seedUpDown);
             this.splitContainer1.Panel1.Controls.Add(this.runButton);
+            this.splitContainer1.Panel1.Controls.Add(this.label5);
             this.splitContainer1.Panel1.Controls.Add(this.textBox2);
             this.splitContainer1.Panel1.Controls.Add(this.stepsUpDown);
             this.splitContainer1.Panel1.Controls.Add(this.edgeUpDown);
@@ -232,7 +258,7 @@
             // 
             // stepsUpDown
             // 
-            this.stepsUpDown.Location = new System.Drawing.Point(234, 138);
+            this.stepsUpDown.Location = new System.Drawing.Point(237, 138);
             this.stepsUpDown.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -244,7 +270,7 @@
             0,
             0});
             this.stepsUpDown.Name = "stepsUpDown";
-            this.stepsUpDown.Size = new System.Drawing.Size(93, 20);
+            this.stepsUpDown.Size = new System.Drawing.Size(90, 20);
             this.stepsUpDown.TabIndex = 3;
             this.stepsUpDown.Value = new decimal(new int[] {
             1,
@@ -254,7 +280,7 @@
             // 
             // edgeUpDown
             // 
-            this.edgeUpDown.Location = new System.Drawing.Point(237, 59);
+            this.edgeUpDown.Location = new System.Drawing.Point(237, 40);
             this.edgeUpDown.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -266,7 +292,7 @@
             // 
             // repsUpDown
             // 
-            this.repsUpDown.Location = new System.Drawing.Point(237, 100);
+            this.repsUpDown.Location = new System.Drawing.Point(237, 112);
             this.repsUpDown.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -329,7 +355,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(177, 100);
+            this.label3.Location = new System.Drawing.Point(180, 112);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(32, 13);
             this.label3.TabIndex = 0;
@@ -356,7 +382,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(196, 59);
+            this.label2.Location = new System.Drawing.Point(196, 42);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(16, 13);
             this.label2.TabIndex = 1;
@@ -372,26 +398,26 @@
             this.drawingPanel.TabIndex = 0;
             this.drawingPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.OnDrawingPanelPaint);
             // 
-            // highDegreeFirstToolStripMenuItem
+            // label5
             // 
-            this.highDegreeFirstToolStripMenuItem.Name = "highDegreeFirstToolStripMenuItem";
-            this.highDegreeFirstToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.highDegreeFirstToolStripMenuItem.Text = "High Degree First";
-            this.highDegreeFirstToolStripMenuItem.Click += new System.EventHandler(this.OnHDFClick);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(176, 76);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Seed";
             // 
-            // lowDegreeFirstToolStripMenuItem
+            // seedUpDown
             // 
-            this.lowDegreeFirstToolStripMenuItem.Name = "lowDegreeFirstToolStripMenuItem";
-            this.lowDegreeFirstToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.lowDegreeFirstToolStripMenuItem.Text = "Low Degree First";
-            this.lowDegreeFirstToolStripMenuItem.Click += new System.EventHandler(this.OnLDFClick);
-            // 
-            // randomRecolorToolStripMenuItem
-            // 
-            this.randomRecolorToolStripMenuItem.Name = "randomRecolorToolStripMenuItem";
-            this.randomRecolorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.randomRecolorToolStripMenuItem.Text = "Random Recolor";
-            this.randomRecolorToolStripMenuItem.Click += new System.EventHandler(this.OnRandomRecolorClick);
+            this.seedUpDown.Location = new System.Drawing.Point(237, 74);
+            this.seedUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.seedUpDown.Name = "seedUpDown";
+            this.seedUpDown.Size = new System.Drawing.Size(90, 20);
+            this.seedUpDown.TabIndex = 1;
             // 
             // Form1
             // 
@@ -417,6 +443,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.edgeUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repsUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.vertexUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -456,6 +483,8 @@
         private System.Windows.Forms.ToolStripMenuItem highDegreeFirstToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lowDegreeFirstToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem randomRecolorToolStripMenuItem;
+        private System.Windows.Forms.NumericUpDown seedUpDown;
+        private System.Windows.Forms.Label label5;
     }
 }
 

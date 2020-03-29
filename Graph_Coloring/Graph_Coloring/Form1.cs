@@ -37,12 +37,13 @@ namespace Graph_Coloring {
         private void OnNewGraphClick(object sender, EventArgs e) {
             int n = (int)vertexUpDown.Value;
             int m = (int)edgeUpDown.Value;
+            int seed = (int)seedUpDown.Value;
 
 
-            string str = "Graph: " + n + " " + m + " " + graphCounter;
+            string str = "Graph: " + n + " " + m + " " + seed + " " + graphCounter;
             graphCounter++;
 
-            GraphParameters gp = new GraphParameters(n, m);
+            GraphParameters gp = new GraphParameters(n, m, seed);
             UGraph uGraph = new UGraph(gp);
             GraphDisplay graphDisplay = new GraphDisplay(uGraph);
             graphDisplay.CircleInit();
@@ -81,13 +82,11 @@ namespace Graph_Coloring {
 
         private void OnSelectedGraphChanged(object sender, EventArgs e) {
             int index = graphListBox.SelectedIndex;
-            if (index == -1) {
-                textBox2.Text = "";
+            if (index == -1) 
                 currentGraphEntry = new GraphEntry();
-            } else {
+            else
                 currentGraphEntry = graphEntries[index];
-                textBox2.Text = currentGraphEntry.UGraph.ToString();
-            }
+
             UpdateDisplay();
         }
 
@@ -114,9 +113,35 @@ namespace Graph_Coloring {
         private void UpdateDisplay() {
             int n = currentGraphEntry.Param.N;
             int m = currentGraphEntry.Param.M;
+            UGraph uGraph = currentGraphEntry.UGraph;
+            int[] coloring = currentGraphEntry.Coloring;
+            GraphDisplay graphDisplay = currentGraphEntry.GraphDisplay;
+
+            if (uGraph != null) {
+                textBox2.Text = currentGraphEntry.UGraph.ToString();
+            }
+            else
+                textBox2.Text = "";
+
+            if (coloring != null) {
+                int[] colorCount = Utility.ArrayToCount(coloring);
+                textBox1.Text = Utility.ArrayToString(colorCount, true);
+            } else
+                textBox1.Text = "";
 
             statusVertexLabel.Text = "N " + n;
             statusEdgeLabel.Text = "M " + m;
+
+            if (graphDisplay != null) {
+
+                double kineticEnergy = graphDisplay.KineticEnergy / 10000.0;
+                statusKineticEnergyLabel.Text = "Kinetic Energy " + kineticEnergy.ToString("F4");
+
+                double potentialEnergy = graphDisplay.PotentialEnergy / 10000.0;
+                statusPotentialEnergyLabel.Text = "Potential Energy " + potentialEnergy.ToString("F4");
+
+                statusStrip1.Refresh();
+            }
 
             drawingPanel.Invalidate();
 
@@ -140,7 +165,7 @@ namespace Graph_Coloring {
                     statusCountLabel.Text = "Count " + r.ToString();
 
                     double kineticEnergy = graphDisplay.KineticEnergy / 10000.0;
-                    statusKineticEnergyLabel.Text = "Kinetice Energy " + kineticEnergy.ToString("F4");
+                    statusKineticEnergyLabel.Text = "Kinetic Energy " + kineticEnergy.ToString("F4");
                    
                     double potentialEnergy = graphDisplay.PotentialEnergy / 10000.0;
                     statusPotentialEnergyLabel.Text = "Potential Energy " + potentialEnergy.ToString("F4");
@@ -154,32 +179,34 @@ namespace Graph_Coloring {
             UGraph uGraph = currentGraphEntry.UGraph;
 
             if (uGraph != null)
-                ApplyColoring(uGraph.HDFColor);
+                ApplyColoring(uGraph.HDFColor, "HDF");
         }
 
         private void OnLDFClick(object sender, EventArgs e) {
             UGraph uGraph = currentGraphEntry.UGraph;
 
             if (uGraph != null)
-                ApplyColoring(uGraph.LDFColor);
+                ApplyColoring(uGraph.LDFColor, "LDF");
         }
 
         public delegate int[] ColoringFunction();
         public delegate int[] RecoloringFunction(int[] coloring);
 
 
-        private void ApplyColoring(ColoringFunction coloringFunction) {
+        private void ApplyColoring(ColoringFunction coloringFunction, string algorithm) {
             UGraph uGraph = currentGraphEntry.UGraph;
             int[] coloring = coloringFunction();
 
             if (uGraph.ValidColoring(coloring)) {
                 currentGraphEntry.Coloring = coloring;
                 int[] colorCount = Utility.ArrayToCount(coloring);
-                textBox1.Text = Utility.ArrayToString(colorCount, true);
+                ColoringResult coloringResult = new ColoringResult(algorithm, colorCount.Length, colorCount);
+                currentGraphEntry.Results = new List<ColoringResult>();
+                currentGraphEntry.Results.Add(coloringResult);
+
                 UpdateDisplay();
             } else
                 textBox1.Text = "Bogus Coloring";
-
         }
 
         private void ApplyRecoloring(RecoloringFunction recoloringFunction) {
@@ -188,19 +215,15 @@ namespace Graph_Coloring {
 
             if (coloring == null) {
                 textBox1.Text = "Cannot recolor uncolored graph";
-                return;
             }
 
             coloring = recoloringFunction(coloring);
 
             if (uGraph.ValidColoring(coloring)) {
                 currentGraphEntry.Coloring = coloring;
-                int[] colorCount = Utility.ArrayToCount(coloring);
-                textBox1.Text = Utility.ArrayToString(colorCount, true);
                 UpdateDisplay();
             } else
                 textBox1.Text = "Bogus Coloring";
-
         }
 
         private void OnRandomRecolorClick(object sender, EventArgs e) {
@@ -211,12 +234,22 @@ namespace Graph_Coloring {
         }
     }
 
-    public struct GraphEntry {
+    public class GraphEntry {
+
+        public GraphEntry() {
+            Param = new GraphParameters();
+            UGraph = null;
+            GraphDisplay = null;
+            Coloring = null;
+            Results = new List<ColoringResult>();
+        }
+
         public GraphEntry(GraphParameters p, UGraph uGraph, GraphDisplay graphDisplay, int[] coloring) {
             Param = p;
             UGraph = uGraph;
             GraphDisplay = graphDisplay;
             Coloring = coloring;
+            Results = new List<ColoringResult>();
         }
 
         public GraphParameters Param { get; }
@@ -226,6 +259,26 @@ namespace Graph_Coloring {
         public GraphDisplay GraphDisplay { get; }
 
         public int[] Coloring { get; set; }
+
+        public List<ColoringResult> Results { get; set; }
+
+    }
+
+    public class ColoringResult {
+        public ColoringResult() {
+
+        }
+
+        public ColoringResult(string algorithm, int colors, int[] colorCount) {
+            Algorithm = algorithm;
+            Colors = colors;
+            ColorCount = colorCount;
+        }
+
+        public string Algorithm { get; }
+        public int Colors { get; }
+        public int[] ColorCount { get; }
+
 
     }
 }

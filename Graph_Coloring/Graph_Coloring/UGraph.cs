@@ -18,7 +18,9 @@ namespace Graph_Coloring {
         }
 
         public UGraph(GraphParameters gp) {
-            random = new Random();
+
+            random = (gp.Seed == 0) ? new Random() : new Random(gp.Seed);
+             
 
             RandomGraph(gp.N, gp.M);
         }
@@ -279,12 +281,14 @@ namespace Graph_Coloring {
     }
 
     public struct GraphParameters {
-        public GraphParameters(int n, int m) {
+        public GraphParameters(int n, int m, int seed) {
             N = n;
             M = m;
+            Seed = seed;
         }
 
         public int N { get; }
         public int M { get; }
+        public int Seed { get; }
     }
 }

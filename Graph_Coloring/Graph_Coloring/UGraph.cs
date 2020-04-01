@@ -290,5 +290,9 @@ namespace Graph_Coloring {
         public int N { get; }
         public int M { get; }
         public int Seed { get; }
+
+        public override string ToString() {
+            return "Graph N: " + N + " M: " + M     + "  Seed: " + Seed + "\r\n";
+        }
     }
 }

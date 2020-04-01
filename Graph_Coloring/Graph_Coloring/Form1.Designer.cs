@@ -42,7 +42,9 @@
             this.statusKineticEnergyLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusPotentialEnergyLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.seedUpDown = new System.Windows.Forms.NumericUpDown();
             this.runButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.stepsUpDown = new System.Windows.Forms.NumericUpDown();
             this.edgeUpDown = new System.Windows.Forms.NumericUpDown();
@@ -55,19 +57,19 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.drawingPanel = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.seedUpDown = new System.Windows.Forms.NumericUpDown();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stepsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.edgeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repsUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vertexUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -88,6 +90,8 @@
             this.newToolStripMenuItem,
             this.removeToolStripMenuItem,
             this.removeAllToolStripMenuItem,
+            this.exportToolStripMenuItem,
+            this.exportAllToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.graphToolStripMenuItem.Name = "graphToolStripMenuItem";
             this.graphToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
@@ -237,6 +241,18 @@
             this.splitContainer1.SplitterDistance = 339;
             this.splitContainer1.TabIndex = 2;
             // 
+            // seedUpDown
+            // 
+            this.seedUpDown.Location = new System.Drawing.Point(237, 74);
+            this.seedUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.seedUpDown.Name = "seedUpDown";
+            this.seedUpDown.Size = new System.Drawing.Size(90, 20);
+            this.seedUpDown.TabIndex = 1;
+            // 
             // runButton
             // 
             this.runButton.Location = new System.Drawing.Point(234, 177);
@@ -246,6 +262,15 @@
             this.runButton.Text = "Run";
             this.runButton.UseVisualStyleBackColor = true;
             this.runButton.Click += new System.EventHandler(this.OnRunButtonClick);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(176, 76);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Seed";
             // 
             // textBox2
             // 
@@ -398,26 +423,19 @@
             this.drawingPanel.TabIndex = 0;
             this.drawingPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.OnDrawingPanelPaint);
             // 
-            // label5
+            // exportToolStripMenuItem
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(176, 76);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Seed";
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.OnExportClick);
             // 
-            // seedUpDown
+            // exportAllToolStripMenuItem
             // 
-            this.seedUpDown.Location = new System.Drawing.Point(237, 74);
-            this.seedUpDown.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.seedUpDown.Name = "seedUpDown";
-            this.seedUpDown.Size = new System.Drawing.Size(90, 20);
-            this.seedUpDown.TabIndex = 1;
+            this.exportAllToolStripMenuItem.Name = "exportAllToolStripMenuItem";
+            this.exportAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportAllToolStripMenuItem.Text = "Export All";
+            this.exportAllToolStripMenuItem.Click += new System.EventHandler(this.OnExportAll);
             // 
             // Form1
             // 
@@ -439,11 +457,11 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stepsUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.edgeUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repsUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.vertexUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -485,6 +503,8 @@
         private System.Windows.Forms.ToolStripMenuItem randomRecolorToolStripMenuItem;
         private System.Windows.Forms.NumericUpDown seedUpDown;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportAllToolStripMenuItem;
     }
 }
 

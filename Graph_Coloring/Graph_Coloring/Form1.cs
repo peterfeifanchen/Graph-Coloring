@@ -201,7 +201,6 @@ namespace Graph_Coloring {
                 currentGraphEntry.Coloring = coloring;
                 int[] colorCount = Utility.ArrayToCount(coloring);
                 ColoringResult coloringResult = new ColoringResult(algorithm, colorCount.Length, colorCount);
-                currentGraphEntry.Results = new List<ColoringResult>();
                 currentGraphEntry.Results.Add(coloringResult);
 
                 UpdateDisplay();
@@ -209,7 +208,7 @@ namespace Graph_Coloring {
                 textBox1.Text = "Bogus Coloring";
         }
 
-        private void ApplyRecoloring(RecoloringFunction recoloringFunction) {
+        private void ApplyRecoloring(RecoloringFunction recoloringFunction, string algorithm) {
             UGraph uGraph = currentGraphEntry.UGraph;
             int[] coloring = currentGraphEntry.Coloring;
 
@@ -221,6 +220,10 @@ namespace Graph_Coloring {
 
             if (uGraph.ValidColoring(coloring)) {
                 currentGraphEntry.Coloring = coloring;
+                int[] colorCount = Utility.ArrayToCount(coloring);
+                ColoringResult coloringResult = new ColoringResult(algorithm, colorCount.Length, colorCount);
+                currentGraphEntry.Results.Add(coloringResult);
+
                 UpdateDisplay();
             } else
                 textBox1.Text = "Bogus Coloring";
@@ -230,8 +233,31 @@ namespace Graph_Coloring {
             UGraph uGraph = currentGraphEntry.UGraph;
 
             if (uGraph != null)
-                ApplyRecoloring(uGraph.RandomRecoloring);
+                ApplyRecoloring(uGraph.RandomRecoloring, "RandomColoring");
         }
+
+        private void OnExportClick(object sender, EventArgs e) {
+            if (graphListBox.SelectedIndex == -1)
+                return;
+
+            string[] strings = new string[1];
+            strings[0] = currentGraphEntry.ToString();
+
+            Utility.StringToFile(strings);
+
+        }
+
+        private void OnExportAll(object sender, EventArgs e) {
+            string[] strings = new string[graphEntries.Count];
+
+            for (int i = 0; i < graphEntries.Count; i++)
+                strings[i] = graphEntries[i].ToString();
+
+            Utility.StringToFile(strings);
+            
+        }
+
+
     }
 
     public class GraphEntry {
@@ -262,6 +288,17 @@ namespace Graph_Coloring {
 
         public List<ColoringResult> Results { get; set; }
 
+        public override string ToString() {
+            StringBuilder sb = new StringBuilder();
+
+            string str = Param.ToString();
+            sb.Append(str);
+            foreach (ColoringResult cr in Results)
+                sb.Append(cr.ToString());
+
+            return sb.ToString();
+        }
+
     }
 
     public class ColoringResult {
@@ -278,6 +315,10 @@ namespace Graph_Coloring {
         public string Algorithm { get; }
         public int Colors { get; }
         public int[] ColorCount { get; }
+
+        public override string ToString() {
+            return "   Alg: " + Algorithm + "  Colors: " + Colors + ":" + Utility.ArrayToString(ColorCount) + "\r\n";
+        }
 
 
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+
 
 namespace Graph_Coloring {
     class Utility {
@@ -110,6 +112,22 @@ namespace Graph_Coloring {
 
             return max;
 
+        }
+
+        public static bool StringToFile(string[] strings) {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog()) {
+
+                saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                saveFileDialog.FilterIndex = 1;
+                saveFileDialog.RestoreDirectory = true;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                    string filePath = saveFileDialog.FileName;
+                    System.IO.File.WriteAllLines(filePath, strings);
+                }
+            }
+
+            return true;
         }
     }
 }

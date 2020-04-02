@@ -277,6 +277,137 @@ namespace Graph_Coloring {
             return newColoring;
         }
 
+        // Recolor vertices of the maximum color by eliminating a color from the neighborhood
+        public int[] RecolorMax(int[] coloring) {
+            int k = maxColor(coloring);
+
+            for (int v = 0; v < nVertices; v++) {
+                if (coloring[v] == k) {
+                    RecolorMax(v, k, coloring);
+                }
+            }
+
+            return coloring;
+        }
+
+        bool RecolorMax(int v, int mc, int[] coloring) {
+            for (int j = 0; j < mc; j++)
+                if (MakeNbdColorFree(v, mc, j, coloring)) {
+                    coloring[v] = j;
+                    return true;
+                }
+            return false;
+
+        }
+
+        // Find the maximum color used in a coloring
+        int maxColor(int[] coloring) {
+            int k = 0;
+            for (int v = 0; v < nVertices; v++)
+                if (coloring[v] > k)
+                    k = coloring[v];
+
+            return k;
+        }
+
+        // Test if the neighborhood of v can be made free of color j.  If so, make the change, and return true,  
+        // otherwise return false without changing the coloring
+        bool MakeNbdColorFree(int v, int mc, int j, int[] coloring) {
+            if (TestNbdColorFree(v, mc, j, coloring) == false)
+                return false;
+
+            List<Edge> edges1 = vertices[v].Edges;
+
+            /*          foreach (Edge e1 in edges1) {
+                          int w = e1.Head;
+                          if (coloring[w] == j)
+                              if (FindFreeColor(w, mc, j, coloring) == -1)
+                                  return false;
+                      }
+                      */
+
+            foreach (Edge e1 in edges1) {
+                int w = e1.Head;
+                if (coloring[w] == j) {
+                    int c = FindFreeColor(w, mc, j, coloring);
+                    if (c == -1)
+                        throw new Exception("Oh shit");
+
+                    coloring[w] = c;
+                }
+            }
+            return true;
+        }
+
+
+        // Test if the neighborhood of v can be made free of color j. 
+        bool TestNbdColorFree(int v, int mc, int j, int[] coloring) {
+            List<Edge> edges1 = vertices[v].Edges;
+            foreach (Edge e1 in edges1) {
+                int w = e1.Head;
+                if (coloring[w] == j)
+                    if (FindFreeColor(w, mc, j, coloring) == -1)
+                        return false;
+            }
+            return true;
+        }
+
+
+        // Find an unused color in the neighborhood.  Colors are required to be in the range 0 . . mc.  -1 is return if there is no available color.
+        int FindFreeColor(int v, int mc, int j, int[] coloring) {
+            bool[] used = new bool[mc + 1];
+            for (int i = 0; i < mc + 1; i++)
+                used[i] = false;
+
+            used[j] = true;
+
+            List<Edge> edges1 = vertices[v].Edges;
+            foreach (Edge e1 in edges1) {
+                int w = e1.Head;
+                int c = coloring[w];
+                if (c <= mc)
+                    used[c] = true;
+            }
+
+            for (int i = 0; i < mc + 1; i++)
+                if (used[i] == false)
+                    return i;
+
+            return -1;
+        }
+
+        // Fully normalize a coloring by repeatedly recoloring vertices until stability is reached.   A queue of vertices to recolor is maintained, with an optimization
+        // to keep duplicates from the queue;
+        public int[] FullNormalize(int[] coloring) {
+            Queue<int> colorQueue = new Queue<int>();
+            bool[] inQueue = new bool[nVertices];
+
+            for (int v = 0; v < nVertices; v++) {
+                colorQueue.Enqueue(v);
+                inQueue[v] = true;
+            }
+
+            while (colorQueue.Count > 0) {
+                int v = colorQueue.Dequeue();
+                inQueue[v] = false;
+                int c = FindLowColor(v, coloring);
+                if (c != coloring[v]) {
+                    coloring[v] = c;
+                    List<Edge> edges = vertices[v].Edges;
+                    foreach (Edge edge in edges) {
+                        int w = edge.Head;
+                        if (inQueue[w] == false) {
+                            inQueue[w] = true;
+                            colorQueue.Enqueue(w);
+                        }
+                    }
+                }
+            }
+
+
+            return coloring;
+        }
+
 
     }
 

@@ -236,6 +236,24 @@ namespace Graph_Coloring {
                 ApplyRecoloring(uGraph.RandomRecoloring, "RandomColoring");
         }
 
+
+        private void OnRecolorMax(object sender, EventArgs e) {
+            UGraph uGraph = currentGraphEntry.UGraph;
+
+            if (uGraph != null)
+                ApplyRecoloring(uGraph.RecolorMax, "Max-RC");
+
+        }
+
+        private void OnNormalizeClick(object sender, EventArgs e) {
+            UGraph uGraph = currentGraphEntry.UGraph;
+
+            if (uGraph != null)
+                ApplyRecoloring(uGraph.FullNormalize, "Normalize");
+
+
+        }
+
         private void OnExportClick(object sender, EventArgs e) {
             if (graphListBox.SelectedIndex == -1)
                 return;
@@ -256,7 +274,6 @@ namespace Graph_Coloring {
             Utility.StringToFile(strings);
             
         }
-
 
     }
 

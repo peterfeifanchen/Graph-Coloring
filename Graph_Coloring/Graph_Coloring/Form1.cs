@@ -39,6 +39,11 @@ namespace Graph_Coloring {
             int m = (int)edgeUpDown.Value;
             int seed = (int)seedUpDown.Value;
 
+            NewGraph(n, m, seed);
+        }
+
+        private void NewGraph(int n, int m, int seed) {  
+
 
             string str = "Graph: " + n + " " + m + " " + seed + " " + graphCounter;
             graphCounter++;
@@ -49,7 +54,7 @@ namespace Graph_Coloring {
             graphDisplay.CircleInit();
             int[] coloring = Utility.InitIntArray(n, 0);
 
-            GraphEntry ge = new GraphEntry(gp, new UGraph(gp), graphDisplay, coloring);
+            GraphEntry ge = new GraphEntry(gp, uGraph, graphDisplay, coloring);
 
             graphListBox.Items.Add(str);
             graphEntries.Add(ge);
@@ -189,6 +194,13 @@ namespace Graph_Coloring {
                 ApplyColoring(uGraph.LDFColor, "LDF");
         }
 
+        private void OnTwoColorClick(object sender, EventArgs e) {
+            UGraph uGraph = currentGraphEntry.UGraph;
+
+            if (uGraph != null)
+                ApplyColoring(uGraph.TwoColor, "2-Col");
+        }
+
         public delegate int[] ColoringFunction();
         public delegate int[] RecoloringFunction(int[] coloring);
 
@@ -245,6 +257,14 @@ namespace Graph_Coloring {
 
         }
 
+        private void OnRecolorSwap(object sender, EventArgs e) {
+            UGraph uGraph = currentGraphEntry.UGraph;
+
+            if (uGraph != null)
+                ApplyRecoloring(uGraph.RecolorSwap, "Max-Swap");
+
+        }
+
         private void OnNormalizeClick(object sender, EventArgs e) {
             UGraph uGraph = currentGraphEntry.UGraph;
 
@@ -275,6 +295,32 @@ namespace Graph_Coloring {
             
         }
 
+        private void OnColorCheckClick(object sender, EventArgs e) {
+            UGraph uGraph = currentGraphEntry.UGraph;
+            int[] coloring = currentGraphEntry.Coloring;
+
+            if (coloring == null)
+                textBox1.Text = "Coloring is empty";
+            else if (uGraph.ValidColoring(coloring))
+                textBox1.Text = "Valid coloring";
+            else
+                textBox1.Text = "Invalid coloring";
+
+        }
+
+        private void OnTestClick(object sender, EventArgs e) {
+            int n = (int)vertexUpDown.Value;
+            int m = (int)edgeUpDown.Value;
+            int seed = graphCounter;
+
+            NewGraph(n, m, seed);
+
+            UGraph uGraph = currentGraphEntry.UGraph;
+
+            if (uGraph != null)
+                ApplyColoring(uGraph.LDFColor, "LDF");
+
+        }
     }
 
     public class GraphEntry {

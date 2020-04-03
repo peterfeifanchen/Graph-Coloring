@@ -177,9 +177,7 @@ namespace Graph_Coloring {
 
         // GreedyColor - Color the vertices of graph in a specified order.  The lowest available color is used
         int[] GreedyColor(int[] vOrder) {
-            int[] colors = new int[nVertices];
-            for (int i = 0; i < nVertices; i++)
-                colors[i] = -1;
+            int[] colors = Utility.InitIntArray(nVertices, -1);  
 
             for (int i = 0; i < nVertices; i++) {
                 int v = vOrder[i];
@@ -244,6 +242,14 @@ namespace Graph_Coloring {
 
         }
 
+        public int[] TwoColor() {
+            int[] colors = Utility.InitIntArray(nVertices, -1);
+
+
+
+            return colors;
+        }
+
         public bool ValidColoring(int[] coloring) {
             for (int i = 0; i < nVertices; i++) {
                 int c = coloring[i];
@@ -256,6 +262,7 @@ namespace Graph_Coloring {
             }
             return true;
         }
+
 
         const int MAX_RANDOM_COLORS = 125;
 
@@ -375,6 +382,49 @@ namespace Graph_Coloring {
 
             return -1;
         }
+
+        public int[] RecolorSwap(int[] coloring) {
+            int k = maxColor(coloring);
+
+            for (int v = 0; v < nVertices; v++) {
+                if (coloring[v] == k) {
+                    int[] nbdColorCount = ColorCount(v, k, coloring);
+                    List<Edge> edges1 = vertices[v].Edges;
+
+                    foreach (Edge e1 in edges1) {
+                        int w = e1.Head;
+                        if (nbdColorCount[coloring[w]] == 1)
+                            if (RecolorSwap(v, w, k, coloring))
+                                break;
+                    }
+                }
+            }
+            return coloring;
+        }
+
+
+        // Determine if swapping the colors of v and w makes it possible to remove a color
+
+        bool RecolorSwap(int v, int w, int mc, int[] coloring) {
+            int colorV = coloring[v];
+            int colorW = coloring[w];
+
+            int[] colorCountW = ColorCount(w, mc, coloring);
+            if (colorCountW[colorV] != 1)
+                return false;
+
+            coloring[v] = colorW;
+            coloring[w] = colorV;
+
+            if (RecolorMax(w, mc, coloring))
+                return true;
+
+            coloring[v] = colorV;
+            coloring[w] = colorW;
+
+            return false;
+        }
+
 
         // Fully normalize a coloring by repeatedly recoloring vertices until stability is reached.   A queue of vertices to recolor is maintained, with an optimization
         // to keep duplicates from the queue;

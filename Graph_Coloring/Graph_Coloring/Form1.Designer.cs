@@ -35,7 +35,11 @@
             this.highDegreeFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lowDegreeFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.randomRecolorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recolorMaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recolorSwapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.normalizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusVertexLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusEdgeLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -59,8 +63,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.drawingPanel = new System.Windows.Forms.Panel();
-            this.recolorMaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.normalizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.twoColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -146,8 +152,12 @@
             this.colorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.highDegreeFirstToolStripMenuItem,
             this.lowDegreeFirstToolStripMenuItem,
+            this.twoColorToolStripMenuItem,
+            this.toolStripSeparator1,
             this.randomRecolorToolStripMenuItem,
+            this.toolStripSeparator2,
             this.recolorMaxToolStripMenuItem,
+            this.recolorSwapToolStripMenuItem,
             this.normalizeToolStripMenuItem});
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
             this.colorToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -174,11 +184,41 @@
             this.randomRecolorToolStripMenuItem.Text = "Random Recolor";
             this.randomRecolorToolStripMenuItem.Click += new System.EventHandler(this.OnRandomRecolorClick);
             // 
+            // recolorMaxToolStripMenuItem
+            // 
+            this.recolorMaxToolStripMenuItem.Name = "recolorMaxToolStripMenuItem";
+            this.recolorMaxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.recolorMaxToolStripMenuItem.Text = "Recolor Max";
+            this.recolorMaxToolStripMenuItem.Click += new System.EventHandler(this.OnRecolorMax);
+            // 
+            // recolorSwapToolStripMenuItem
+            // 
+            this.recolorSwapToolStripMenuItem.Name = "recolorSwapToolStripMenuItem";
+            this.recolorSwapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.recolorSwapToolStripMenuItem.Text = "Recolor Swap";
+            this.recolorSwapToolStripMenuItem.Click += new System.EventHandler(this.OnRecolorSwap);
+            // 
+            // normalizeToolStripMenuItem
+            // 
+            this.normalizeToolStripMenuItem.Name = "normalizeToolStripMenuItem";
+            this.normalizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.normalizeToolStripMenuItem.Text = "Normalize";
+            this.normalizeToolStripMenuItem.Click += new System.EventHandler(this.OnNormalizeClick);
+            // 
             // displayToolStripMenuItem
             // 
+            this.displayToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkColorsToolStripMenuItem});
             this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
             this.displayToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.displayToolStripMenuItem.Text = "Display";
+            // 
+            // checkColorsToolStripMenuItem
+            // 
+            this.checkColorsToolStripMenuItem.Name = "checkColorsToolStripMenuItem";
+            this.checkColorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkColorsToolStripMenuItem.Text = "Check Colors";
+            this.checkColorsToolStripMenuItem.Click += new System.EventHandler(this.OnColorCheckClick);
             // 
             // statusStrip1
             // 
@@ -236,6 +276,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.AliceBlue;
+            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.seedUpDown);
             this.splitContainer1.Panel1.Controls.Add(this.runButton);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
@@ -441,19 +482,32 @@
             this.drawingPanel.TabIndex = 0;
             this.drawingPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.OnDrawingPanelPaint);
             // 
-            // recolorMaxToolStripMenuItem
+            // twoColorToolStripMenuItem
             // 
-            this.recolorMaxToolStripMenuItem.Name = "recolorMaxToolStripMenuItem";
-            this.recolorMaxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.recolorMaxToolStripMenuItem.Text = "Recolor Max";
-            this.recolorMaxToolStripMenuItem.Click += new System.EventHandler(this.OnRecolorMax);
+            this.twoColorToolStripMenuItem.Name = "twoColorToolStripMenuItem";
+            this.twoColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.twoColorToolStripMenuItem.Text = "Two Color";
+            this.twoColorToolStripMenuItem.Click += new System.EventHandler(this.OnTwoColorClick);
             // 
-            // normalizeToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.normalizeToolStripMenuItem.Name = "normalizeToolStripMenuItem";
-            this.normalizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.normalizeToolStripMenuItem.Text = "Normalize";
-            this.normalizeToolStripMenuItem.Click += new System.EventHandler(this.OnNormalizeClick);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(153, 177);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Test";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.OnTestClick);
             // 
             // Form1
             // 
@@ -525,6 +579,12 @@
         private System.Windows.Forms.ToolStripMenuItem exportAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recolorMaxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem normalizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkColorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recolorSwapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem twoColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.Button button1;
     }
 }
 

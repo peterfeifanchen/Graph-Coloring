@@ -243,11 +243,47 @@ namespace Graph_Coloring {
         }
 
         public int[] TwoColor() {
-            int[] colors = Utility.InitIntArray(nVertices, -1);
+            int[] coloring = Utility.InitIntArray(nVertices, -1);
+            int k = 0;
+
+            do {
+                TwoColor(k, coloring);
+                k += 2;
+            } while (Utility.CountIf(coloring, -1) > 0);
 
 
+            return coloring;
+        }
 
-            return colors;
+        public void TwoColor(int k, int[] coloring) {
+            for (int v = 0; v < nVertices; v++) {
+                if (coloring[v] == -1)
+                    BFSColor(v, k, coloring);
+            }        
+        }
+
+        public void BFSColor(int v, int k, int[] coloring) {
+            int c = k;
+            HashSet<int> S = new HashSet<int>();
+            S.Add(v);
+
+            while (S.Count > 0) {
+                foreach (int w in S)
+                    coloring[w] = c;
+
+                HashSet<int> S1 = new HashSet<int>();
+                foreach (int w in S) {
+                    List<Edge> edges = vertices[w].Edges;
+                    foreach (Edge edge in edges) {
+                        int x = edge.Head;
+                        if (coloring[x] == -1)
+                            S1.Add(x);
+                    }
+                }
+                S = MaximalIndependentSet(S1);
+
+                c = (c == k) ? k + 1 : k;
+            }
         }
 
         public bool ValidColoring(int[] coloring) {
@@ -456,6 +492,25 @@ namespace Graph_Coloring {
 
 
             return coloring;
+        }
+
+        HashSet<int> MaximalIndependentSet(HashSet<int> S) {
+            HashSet<int> I = new HashSet<int>();
+
+            foreach (int v in S) {
+                bool independent = true;
+                List<Edge> edges = vertices[v].Edges;
+                foreach (Edge edge in edges) {
+                    int w = edge.Head;
+                    if (I.Contains(w))
+                        independent = false;
+                }
+                if (independent)
+                    I.Add(v);
+            }
+
+
+            return I;
         }
 
 

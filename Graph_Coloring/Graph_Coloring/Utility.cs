@@ -114,6 +114,14 @@ namespace Graph_Coloring {
 
         }
 
+        public static int CountIf(int[] arr, int val) {
+            int count = 0;
+            for (int i = 0; i < arr.Length; i++)
+                if (arr[i] == val)
+                    count++;
+            return count;
+        }
+
         public static bool StringToFile(string[] strings) {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog()) {
 

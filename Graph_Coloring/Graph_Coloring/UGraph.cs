@@ -244,7 +244,7 @@ namespace Graph_Coloring {
 
         public int[] TwoColor() {
             int[] coloring = Utility.InitIntArray(nVertices, -1);
-            int k = 0;
+            int k = 0;   
 
             do {
                 TwoColor(k, coloring);
@@ -255,34 +255,46 @@ namespace Graph_Coloring {
             return coloring;
         }
 
+        // Compute a k, k+1 coloring of all uncolored vertices
         public void TwoColor(int k, int[] coloring) {
+            HashSet<int> unvisited = new HashSet<int>();
+            for (int i = 0; i < nVertices; i++)
+                if (coloring[i] == -1)
+                    unvisited.Add(i);
+
             for (int v = 0; v < nVertices; v++) {
-                if (coloring[v] == -1)
-                    BFSColor(v, k, coloring);
+                if (unvisited.Contains(v))
+                    BFSColor(v, k, coloring, unvisited);
             }        
         }
 
-        public void BFSColor(int v, int k, int[] coloring) {
+        public void BFSColor(int v, int k, int[] coloring, HashSet<int> unvisited) {
             int c = k;
             HashSet<int> S = new HashSet<int>();
             S.Add(v);
+            coloring[v] = c;
+            unvisited.Remove(v);
 
             while (S.Count > 0) {
-                foreach (int w in S)
-                    coloring[w] = c;
-
+                
                 HashSet<int> S1 = new HashSet<int>();
                 foreach (int w in S) {
                     List<Edge> edges = vertices[w].Edges;
                     foreach (Edge edge in edges) {
                         int x = edge.Head;
-                        if (coloring[x] == -1)
+                        if (unvisited.Contains(x)) {
                             S1.Add(x);
+                            unvisited.Remove(x);
+                        }
                     }
                 }
                 S = MaximalIndependentSet(S1);
 
                 c = (c == k) ? k + 1 : k;
+
+                foreach (int w in S)
+                    coloring[w] = c;
+                
             }
         }
 

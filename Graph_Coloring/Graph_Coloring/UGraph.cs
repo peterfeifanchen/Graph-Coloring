@@ -20,9 +20,11 @@ namespace Graph_Coloring {
         public UGraph(GraphParameters gp) {
 
             random = (gp.Seed == 0) ? new Random() : new Random(gp.Seed);
-             
 
-            RandomGraph(gp.N, gp.M);
+            if (gp.IsBipartite)
+                RandomBipartiteGraph(gp.N, gp.M);
+            else 
+                RandomGraph(gp.N, gp.M);
         }
 
 
@@ -44,6 +46,31 @@ namespace Graph_Coloring {
                 i++;
             }
         }
+
+        public void RandomBipartiteGraph(int n, int m) {
+
+            if (n % 2 != 0)
+                throw new Exception("Even number required");
+
+            int n2 = n / 2;
+            
+            long maxEdges = ((long)n2) * n2;
+            if (m > maxEdges)
+                throw new Exception("Too many edges");
+
+            SetVertices(n);
+
+            int i = 0;
+            while (i < m) {
+                int u = random.Next(n2);
+                int v = random.Next(n2,n);
+                if (u == v || IsEdge(u, v))
+                    continue;
+                AddEdge(u, v);
+                i++;
+            }
+        }
+
 
 
 
@@ -529,18 +556,21 @@ namespace Graph_Coloring {
     }
 
     public struct GraphParameters {
-        public GraphParameters(int n, int m, int seed) {
+        public GraphParameters(int n, int m, int seed, bool isBipartite) {
             N = n;
             M = m;
             Seed = seed;
+            IsBipartite = isBipartite;
         }
 
         public int N { get; }
         public int M { get; }
         public int Seed { get; }
 
+        public bool IsBipartite { get; }
+
         public override string ToString() {
-            return "Graph N: " + N + " M: " + M     + "  Seed: " + Seed + "\r\n";
+            return "Graph N: " + N + " M: " + M     + "  Seed: " + Seed + "IsBipartitie: " + IsBipartite + "\r\n";
         }
     }
 }

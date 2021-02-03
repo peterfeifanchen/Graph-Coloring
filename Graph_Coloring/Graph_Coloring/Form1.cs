@@ -39,19 +39,32 @@ namespace Graph_Coloring {
             int m = (int)edgeUpDown.Value;
             int seed = (int)seedUpDown.Value;
 
-            NewGraph(n, m, seed);
+            NewGraph(n, m, seed, false);
         }
 
-        private void NewGraph(int n, int m, int seed) {  
+        private void OnNewBipartiteClick(object sender, EventArgs e) {
+            int n = (int)vertexUpDown.Value;
+            int m = (int)edgeUpDown.Value;
+            int seed = (int)seedUpDown.Value;
+
+            NewGraph(n, m, seed, true);
+
+        }
+
+        private void NewGraph(int n, int m, int seed, bool isBipartite) {  
 
 
             string str = "Graph: " + n + " " + m + " " + seed + " " + graphCounter;
             graphCounter++;
 
-            GraphParameters gp = new GraphParameters(n, m, seed);
+            GraphParameters gp = new GraphParameters(n, m, seed, isBipartite);
             UGraph uGraph = new UGraph(gp);
             GraphDisplay graphDisplay = new GraphDisplay(uGraph);
-            graphDisplay.CircleInit();
+ /*           if (isBipartite)
+                graphDisplay.BipartiteInit();
+            else  */
+                graphDisplay.CircleInit();
+
             int[] coloring = Utility.InitIntArray(n, 0);
 
             GraphEntry ge = new GraphEntry(gp, uGraph, graphDisplay, coloring);
@@ -106,7 +119,7 @@ namespace Graph_Coloring {
                 float scaleY = drawingPanel.Height / 6.0F;
 
                 Matrix matrix = new Matrix();
-                matrix.Scale(1F, -1F);
+                matrix.Scale(0.65F, -0.65F);
                 matrix.Translate(w / 2.0F, h / 2.0F, MatrixOrder.Append);
                 g.Transform = matrix;
 
@@ -313,7 +326,7 @@ namespace Graph_Coloring {
             int m = (int)edgeUpDown.Value;
             int seed = graphCounter;
 
-            NewGraph(n, m, seed);
+            NewGraph(n, m, seed, false);
 
             UGraph uGraph = currentGraphEntry.UGraph;
 
@@ -321,6 +334,12 @@ namespace Graph_Coloring {
                 ApplyColoring(uGraph.LDFColor, "LDF");
 
         }
+
+        private void textBox2_TextChanged(object sender, EventArgs e) {
+
+        }
+
+
     }
 
     public class GraphEntry {

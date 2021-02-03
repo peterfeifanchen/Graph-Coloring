@@ -9,16 +9,30 @@ namespace Graph_Coloring {
     public class GraphDisplay {
         Random random;
         UGraph graph;
-        const int MAX_VERTICES = 100;
-        const float SCALE_FACTOR = 100F;
-        const float RADIUS = 8F;
-        const float EPSILON = 0.000001F;
-        const float HUGE = 1.0E10F;
+        /*       
+               const int MAX_VERTICES = 300;
+               const float SCALE_FACTOR = 300F;
+               const float RADIUS = 6F;
+               const float EPSILON = 0.00001F;
+               const float HUGE = 1.0E5F;
+               const float CENTRAL_FORCE_CONSTANT = 0.25F;
+               const float HOOKES_FORCE_CONSTANT = 0.5F;
+               const float DAMPING_FORCE_CONSTANT = 0.05F;
+
+               const float DELTA = 0.001F;
+               const float COULOMB_CONSTANT = 160000F;
+               */
+
+        const int MAX_VERTICES = 300;
+        const float SCALE_FACTOR = 300F;
+        const float RADIUS = 6F;
+        const float EPSILON = 0.00001F;
+        const float HUGE = 1.0E5F;
         const float CENTRAL_FORCE_CONSTANT = 0.25F;
         const float HOOKES_FORCE_CONSTANT = 0.5F;
         const float DAMPING_FORCE_CONSTANT = 0.05F;
 
-        const float DELTA = 0.001F;
+        const float DELTA = 0.0005F;
         const float COULOMB_CONSTANT = 160000F;
 
         Color[] colorVector;
@@ -71,6 +85,18 @@ namespace Graph_Coloring {
                 double y = SCALE_FACTOR * Math.Sin(r);
                 graph.Vertices[i].Loc = new PointF((float)x, (float)y);
 
+            }
+        }
+
+        public void BipartiteInit() {
+            int n2 = graph.NVertices / 2;
+
+
+            for (int i = 0; i < n2; i++) {
+                double x = 1 -  SCALE_FACTOR * 2 * i / (n2 - 1);
+                double y = SCALE_FACTOR;
+                graph.Vertices[i].Loc = new PointF((float)x, (float)-y);
+                graph.Vertices[i + n2].Loc = new PointF((float)x, (float)y);
             }
         }
 
